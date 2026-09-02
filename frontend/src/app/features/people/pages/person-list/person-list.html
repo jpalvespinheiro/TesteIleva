@@ -1,0 +1,120 @@
+<section class="page-heading">
+  <h1>Pessoas</h1>
+  <a class="button button--primary" routerLink="/people/new">Nova pessoa</a>
+</section>
+
+<section class="panel">
+  <div class="toolbar">
+    <button
+      class="button button--ghost filter-button"
+      type="button"
+      [attr.aria-expanded]="filtersOpen()"
+      aria-controls="people-filters"
+      (click)="filtersOpen.set(!filtersOpen())"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6h16M7 12h10M10 18h4" />
+      </svg>
+      Filtros
+      @if (activeFilterCount()) {
+        <span class="filter-count">{{ activeFilterCount() }}</span>
+      }
+    </button>
+
+    @if (pagination(); as pagination) {
+      <span class="result-count">{{ pagination.total }} {{ pagination.total === 1 ? 'pessoa' : 'pessoas' }}</span>
+    }
+  </div>
+
+  @if (filtersOpen()) {
+    <form id="people-filters" class="filters-panel" [formGroup]="filtersForm" (ngSubmit)="applyFilters()">
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" formControlName="name" maxlength="120" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span>CPF</span>
+        <input
+          type="text"
+          formControlName="cpf"
+          maxlength="14"
+          inputmode="numeric"
+          autocomplete="off"
+          (blur)="formatCpfFilter()"
+        />
+      </label>
+      <label class="field">
+        <span>Telefone</span>
+        <input type="tel" formControlName="phone" maxlength="16" autocomplete="off" (blur)="formatPhoneFilter()" />
+      </label>
+      <div class="filters-actions">
+        <button class="button button--ghost" type="button" (click)="clearFilters()">Limpar</button>
+        <button class="button button--primary" type="submit">Aplicar</button>
+      </div>
+    </form>
+  }
+
+  @if (loading()) {
+    <app-loading-state message="Carregando pessoas" />
+  } @else if (error()) {
+    <div class="feedback feedback--error" role="alert">
+      <span>{{ error() }}</span>
+      <button class="button button--ghost" type="button" (click)="load(1)">Tentar novamente</button>
+    </div>
+  } @else if (people().length === 0) {
+    <app-empty-state title="Nenhuma pessoa encontrada" description="Altere os filtros ou cadastre uma pessoa.">
+      <a class="button button--primary" routerLink="/people/new">Cadastrar pessoa</a>
+    </app-empty-state>
+  } @else {
+    <app-person-grid [people]="people()" (deleteRequested)="requestDelete($event)" />
+
+    @if (pagination(); as pagination) {
+      @if (pagination.last_page > 1) {
+        <nav class="pagination" aria-label="Paginação">
+          <button
+            class="page-button"
+            type="button"
+            aria-label="Página anterior"
+            [disabled]="pagination.page === 1"
+            (click)="load(pagination.page - 1)"
+          >
+            ‹
+          </button>
+          @for (page of visiblePages(); track page) {
+            <button
+              class="page-button"
+              type="button"
+              [class.page-button--active]="page === pagination.page"
+              [attr.aria-current]="page === pagination.page ? 'page' : null"
+              [attr.aria-label]="'Página ' + page"
+              (click)="load(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            class="page-button"
+            type="button"
+            aria-label="Próxima página"
+            [disabled]="pagination.page === pagination.last_page"
+            (click)="load(pagination.page + 1)"
+          >
+            ›
+          </button>
+        </nav>
+      }
+    }
+  }
+</section>
+
+@if (deleteError()) {
+  <div class="toast toast--error" role="alert">{{ deleteError() }}</div>
+}
+
+<app-person-delete-dialog
+  [open]="personToDelete() !== null"
+  [busy]="deleting()"
+  [personName]="personToDelete()?.name ?? ''"
+  (cancelled)="cancelDelete()"
+  (confirmed)="confirmDelete()"
+/>
