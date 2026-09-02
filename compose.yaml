@@ -1,0 +1,51 @@
+name: ileva-contact-list
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      APP_NAME: Contact List API
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: contact_list
+      DB_USERNAME: contact_list
+      DB_PASSWORD: contact_list
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      FRONTEND_URL: http://localhost:4200
+    ports:
+      - "8000:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: contact_list
+      POSTGRES_USER: contact_list
+      POSTGRES_PASSWORD: contact_list
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contact_list -d contact_list"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+volumes:
+  database_data:
