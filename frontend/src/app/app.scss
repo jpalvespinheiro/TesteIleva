@@ -1,0 +1,16 @@
+.app-content {
+  margin: 0 auto;
+  max-width: 74rem;
+  min-height: calc(100vh - 4rem);
+  padding: 2rem 1.5rem;
+}
+
+@media (max-width: 520px) {
+  .app-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .app-content {
+    padding-top: 1.75rem;
+  }
+}
