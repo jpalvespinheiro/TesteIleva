@@ -1,0 +1,47 @@
+<form class="contact-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="contact-form__heading">
+    <div>
+      <h2>{{ contact() ? 'Editar contato' : 'Novo contato' }}</h2>
+    </div>
+    <button class="icon-button" type="button" aria-label="Fechar formulário" title="Fechar" (click)="cancelled.emit()">
+      ×
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="feedback feedback--error" role="alert">{{ error() }}</div>
+  }
+
+  <div class="contact-form__fields">
+    <label class="field">
+      <span>Tipo <strong class="required-mark" aria-hidden="true">*</strong></span>
+      <select formControlName="type" required>
+        @for (option of options; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="field field--grow">
+      <span>Contato <strong class="required-mark" aria-hidden="true">*</strong></span>
+      <input
+        formControlName="value"
+        [type]="form.controls.type.value === 'email' ? 'email' : 'tel'"
+        [placeholder]="form.controls.type.value === 'email' ? 'nome@exemplo.com' : '(11) 99999-9999'"
+        [autocomplete]="form.controls.type.value === 'email' ? 'email' : 'tel'"
+        required
+        (blur)="formatValue()"
+      />
+      @if (valueError()) {
+        <small class="field__error">{{ valueError() }}</small>
+      }
+    </label>
+  </div>
+
+  <div class="contact-form__actions">
+    <button class="button button--ghost" type="button" (click)="cancelled.emit()">Cancelar</button>
+    <button class="button button--primary" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Salvando...' : 'Salvar contato' }}
+    </button>
+  </div>
+</form>

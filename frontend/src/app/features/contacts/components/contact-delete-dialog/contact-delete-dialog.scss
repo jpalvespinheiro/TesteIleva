@@ -1,0 +1,56 @@
+.dialog-backdrop {
+  align-items: center;
+  background: rgb(15 23 42 / 58%);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1.5rem;
+  position: fixed;
+  z-index: 50;
+}
+
+.delete-dialog {
+  background: var(--surface);
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 80px rgb(15 23 42 / 24%);
+  max-width: 27rem;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.delete-dialog__icon {
+  align-items: center;
+  background: var(--danger-soft);
+  border-radius: 50%;
+  color: var(--danger);
+  display: inline-flex;
+  font-size: 1.7rem;
+  height: 3.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 3.5rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin: 0.35rem 0 0.65rem;
+}
+
+strong {
+  display: block;
+  margin-bottom: 0.65rem;
+}
+
+p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.delete-dialog__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}

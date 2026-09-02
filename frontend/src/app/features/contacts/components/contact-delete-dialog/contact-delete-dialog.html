@@ -1,0 +1,19 @@
+@if (open()) {
+  <div class="dialog-backdrop">
+    <section class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="contact-delete-title">
+      <div class="delete-dialog__icon" aria-hidden="true">×</div>
+      <h2 id="contact-delete-title">Remover este contato?</h2>
+      <strong>{{ contactValue() }}</strong>
+      <p>Apenas este meio de contato será removido da pessoa.</p>
+
+      <div class="delete-dialog__actions">
+        <button class="button button--ghost" type="button" [disabled]="busy()" (click)="cancelled.emit()">
+          Manter contato
+        </button>
+        <button class="button button--danger" type="button" [disabled]="busy()" (click)="confirmed.emit()">
+          {{ busy() ? 'Removendo...' : 'Remover contato' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

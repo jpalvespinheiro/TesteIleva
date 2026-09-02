@@ -1,0 +1,33 @@
+<div class="contact-list">
+  @for (contact of contacts(); track contact.id) {
+    <article class="contact-item">
+      <app-contact-type-badge [type]="contact.type" />
+      <strong class="contact-item__value">{{ displayValue(contact) }}</strong>
+      <div class="contact-item__actions">
+        <button
+          class="contact-action"
+          type="button"
+          aria-label="Editar contato"
+          title="Editar contato"
+          (click)="editRequested.emit(contact)"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m4 16-.8 4.8L8 20l11-11-4-4L4 16Z" />
+            <path d="m13.5 6.5 4 4" />
+          </svg>
+        </button>
+        <button
+          class="contact-action contact-action--danger"
+          type="button"
+          aria-label="Excluir contato"
+          title="Excluir contato"
+          (click)="deleteRequested.emit(contact)"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5" />
+          </svg>
+        </button>
+      </div>
+    </article>
+  }
+</div>
