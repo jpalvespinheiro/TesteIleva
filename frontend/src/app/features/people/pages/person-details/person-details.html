@@ -1,0 +1,142 @@
+@if (loading()) {
+  <section class="panel">
+    <app-loading-state message="Carregando detalhes" />
+  </section>
+} @else if (error()) {
+  <section class="panel feedback-page">
+    <div class="feedback feedback--error" role="alert">{{ error() }}</div>
+    <button class="button button--ghost" type="button" (click)="loadPerson()">Tentar novamente</button>
+  </section>
+} @else if (person(); as currentPerson) {
+  <section class="page-heading page-heading--details">
+    <div>
+      <a class="back-link" routerLink="/people" aria-label="Voltar para pessoas" title="Voltar para pessoas">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m14 6-6 6 6 6M8 12h10" />
+        </svg>
+      </a>
+      <h1>{{ currentPerson.name }}</h1>
+    </div>
+    <div class="heading-actions">
+      <a
+        class="icon-button"
+        [routerLink]="['/people', currentPerson.id, 'edit']"
+        aria-label="Editar pessoa"
+        title="Editar pessoa"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m4 16-.8 4.8L8 20l11-11-4-4L4 16Z" />
+          <path d="m13.5 6.5 4 4" />
+        </svg>
+      </a>
+      <button
+        class="icon-button icon-button--danger"
+        type="button"
+        aria-label="Excluir pessoa"
+        title="Excluir pessoa"
+        (click)="deletePersonDialogOpen.set(true)"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  @if (actionError()) {
+    <div class="feedback feedback--error" role="alert">{{ actionError() }}</div>
+  }
+
+  <div class="details-grid">
+    <section class="panel details-card">
+      <div class="section-heading">
+        <h2>Dados pessoais</h2>
+      </div>
+
+      <dl class="data-list">
+        <div>
+          <dt>Nome completo</dt>
+          <dd>{{ currentPerson.name }}</dd>
+        </div>
+        <div>
+          <dt>CPF</dt>
+          <dd>{{ currentPerson.cpf | cpf }}</dd>
+        </div>
+        <div>
+          <dt>Celular principal</dt>
+          <dd>{{ currentPerson.phone | phone }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel details-card">
+      <div class="section-heading">
+        <h2>Endereço</h2>
+        <span class="state-badge">{{ currentPerson.address.state }}</span>
+      </div>
+
+      <address>
+        <strong
+          >{{ currentPerson.address.street || 'Logradouro não informado' }}, {{ currentPerson.address.number }}</strong
+        >
+        @if (currentPerson.address.complement) {
+          <span>{{ currentPerson.address.complement }}</span>
+        }
+        <span>{{ currentPerson.address.neighborhood || 'Bairro não informado' }}</span>
+        <span>{{ currentPerson.address.city }} · {{ currentPerson.address.cep | cep }}</span>
+      </address>
+    </section>
+  </div>
+
+  <section class="panel contacts-panel">
+    <div class="section-heading section-heading--contacts">
+      <div>
+        <h2>Contatos</h2>
+        <p>{{ currentPerson.contacts?.length ?? 0 }} cadastrados</p>
+      </div>
+      @if (!contactFormOpen()) {
+        <button class="button button--primary" type="button" (click)="openNewContact()">Adicionar contato</button>
+      }
+    </div>
+
+    @if (contactFormOpen()) {
+      <app-contact-form
+        [personId]="currentPerson.id"
+        [contact]="editingContact()"
+        (cancelled)="closeContactForm()"
+        (saved)="contactSaved()"
+      />
+    }
+
+    @if (!currentPerson.contacts?.length && !contactFormOpen()) {
+      <app-empty-state
+        title="Nenhum contato adicional"
+        description="Adicione um e-mail, telefone ou WhatsApp para esta pessoa."
+      >
+        <button class="button button--primary" type="button" (click)="openNewContact()">Adicionar contato</button>
+      </app-empty-state>
+    } @else if (currentPerson.contacts?.length) {
+      <app-contact-list
+        [contacts]="currentPerson.contacts ?? []"
+        (editRequested)="openEditContact($event)"
+        (deleteRequested)="requestContactDelete($event)"
+      />
+    }
+  </section>
+
+  <app-contact-delete-dialog
+    [open]="contactToDelete() !== null"
+    [busy]="deletingContact()"
+    [contactValue]="contactToDelete()?.value ?? ''"
+    (cancelled)="contactToDelete.set(null)"
+    (confirmed)="confirmContactDelete()"
+  />
+
+  <app-person-delete-dialog
+    [open]="deletePersonDialogOpen()"
+    [busy]="deletingPerson()"
+    [personName]="currentPerson.name"
+    (cancelled)="deletePersonDialogOpen.set(false)"
+    (confirmed)="confirmPersonDelete()"
+  />
+}
