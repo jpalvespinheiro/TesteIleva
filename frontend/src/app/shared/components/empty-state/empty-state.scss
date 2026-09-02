@@ -1,0 +1,31 @@
+.empty-state {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+}
+
+.empty-state__icon {
+  align-items: center;
+  background: var(--primary-soft);
+  border-radius: 1rem;
+  color: var(--primary);
+  display: flex;
+  font-size: 1.75rem;
+  height: 3.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 3.5rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.4rem;
+}
+
+p {
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+  max-width: 28rem;
+}

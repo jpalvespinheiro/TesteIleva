@@ -1,0 +1,46 @@
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.app-header__content {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 74rem;
+  padding: 0.85rem 1.5rem;
+}
+
+.brand {
+  align-items: center;
+  color: var(--text);
+  display: inline-flex;
+  height: 2.5rem;
+  justify-content: center;
+  text-decoration: none;
+
+  svg {
+    fill: none;
+    height: 2rem;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+    width: 2rem;
+  }
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+@media (max-width: 520px) {
+  .app-header__content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
