@@ -1,0 +1,47 @@
+<div class="person-grid">
+  @for (person of people(); track person.id) {
+    <article class="person-card">
+      <a class="person-card__main" [routerLink]="['/people', person.id]">
+        <span class="avatar" aria-hidden="true">{{ person.name.charAt(0).toUpperCase() }}</span>
+        <span class="person-card__identity">
+          <strong>{{ person.name }}</strong>
+          <small>{{ person.cpf | cpf }}</small>
+        </span>
+      </a>
+
+      <div class="person-card__info">
+        <span>{{ person.phone | phone }}</span>
+        <small>{{ person.address.city }} · {{ person.address.state }}</small>
+      </div>
+
+      <span class="contact-count">
+        {{ person.contacts_count ?? 0 }} {{ person.contacts_count === 1 ? 'contato' : 'contatos' }}
+      </span>
+
+      <div class="person-card__actions">
+        <a
+          class="record-action"
+          [routerLink]="['/people', person.id, 'edit']"
+          [attr.aria-label]="'Editar ' + person.name"
+          [attr.title]="'Editar ' + person.name"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m4 16-.8 4.8L8 20l11-11-4-4L4 16Z" />
+            <path d="m13.5 6.5 4 4" />
+          </svg>
+        </a>
+        <button
+          class="record-action record-action--danger"
+          type="button"
+          [attr.aria-label]="'Excluir ' + person.name"
+          [attr.title]="'Excluir ' + person.name"
+          (click)="deleteRequested.emit(person)"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5" />
+          </svg>
+        </button>
+      </div>
+    </article>
+  }
+</div>

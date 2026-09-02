@@ -1,0 +1,148 @@
+.person-grid {
+  display: grid;
+}
+
+.person-card {
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(15rem, 1.5fr) minmax(11rem, 1fr) auto auto;
+  padding: 1rem 1.25rem;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.person-card__main {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  gap: 0.85rem;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.avatar {
+  align-items: center;
+  background: var(--primary-soft);
+  border-radius: 0.5rem;
+  color: var(--primary);
+  display: flex;
+  flex: 0 0 auto;
+  font-weight: 700;
+  height: 2.75rem;
+  justify-content: center;
+  width: 2.75rem;
+}
+
+.contact-count {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.person-card__identity,
+.person-card__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  strong,
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  small {
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+}
+
+.person-card__actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.record-action {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0.6rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 2.25rem;
+  justify-content: center;
+  padding: 0;
+  text-decoration: none;
+  width: 2.25rem;
+
+  &:hover {
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+
+  svg {
+    fill: none;
+    height: 1rem;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    width: 1rem;
+  }
+}
+
+.record-action--danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+@media (max-width: 850px) {
+  .person-card {
+    grid-template-columns: 1fr auto;
+  }
+
+  .person-card__info {
+    grid-column: 1;
+    padding-left: 3.6rem;
+  }
+
+  .contact-count {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .person-card__actions {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .person-card {
+    grid-template-columns: 1fr;
+  }
+
+  .person-card__info,
+  .contact-count,
+  .person-card__actions {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .person-card__info {
+    padding-left: 3.6rem;
+  }
+
+  .contact-count {
+    margin-left: 3.6rem;
+  }
+
+  .person-card__actions {
+    justify-content: flex-end;
+  }
+}

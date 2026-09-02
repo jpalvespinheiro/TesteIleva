@@ -1,0 +1,22 @@
+@if (open()) {
+  <div class="dialog-backdrop">
+    <section class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="person-delete-title">
+      <div class="delete-dialog__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5" />
+        </svg>
+      </div>
+      <h2 id="person-delete-title">Excluir {{ personName() }}?</h2>
+      <p>O endereço e todos os contatos vinculados também serão removidos. Esta ação não pode ser desfeita.</p>
+
+      <div class="delete-dialog__actions">
+        <button class="button button--ghost" type="button" [disabled]="busy()" (click)="cancelled.emit()">
+          Manter pessoa
+        </button>
+        <button class="button button--danger" type="button" [disabled]="busy()" (click)="confirmed.emit()">
+          {{ busy() ? 'Excluindo...' : 'Excluir pessoa' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}
