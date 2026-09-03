@@ -80,7 +80,8 @@ final class PersonApiTest extends TestCase
     {
         $this->postJson('/api/people', ['name' => ''])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors('name');
+            ->assertJsonValidationErrors('name')
+            ->assertJsonPath('message', 'O campo nome completo é obrigatório. (e mais 5 erros)');
     }
 
     public function test_rejects_invalid_cpf_and_phone(): void
