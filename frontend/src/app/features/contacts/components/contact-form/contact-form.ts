@@ -80,8 +80,9 @@ export class ContactForm {
     request.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => this.saved.emit(),
       error: (error: unknown) => {
-        this.error.set(apiErrorMessage(error));
-        this.serverErrors.set(apiValidationErrors(error));
+        const validationErrors = apiValidationErrors(error);
+        this.serverErrors.set(validationErrors);
+        this.error.set(Object.keys(validationErrors).length === 0 ? apiErrorMessage(error) : '');
       },
     });
   }

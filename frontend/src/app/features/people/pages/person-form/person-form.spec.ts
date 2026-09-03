@@ -179,7 +179,8 @@ describe('PersonForm', () => {
     form.dispatchEvent(new Event('submit'));
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('O CPF informado já está cadastrado.');
+    const messages = fixture.nativeElement.textContent.match(/O CPF informado já está cadastrado\./g);
+    expect(messages).toHaveLength(1);
 
     fillInput(fixture, '[formControlName="cpf"]', '111.444.777-35');
     fixture.detectChanges();

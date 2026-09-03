@@ -101,8 +101,9 @@ export class PersonForm {
     request.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: (response) => void this.router.navigate(this.isEditing ? ['/people', response.data.id] : ['/people']),
       error: (error: unknown) => {
-        this.error.set(apiErrorMessage(error));
-        this.serverErrors.set(apiValidationErrors(error));
+        const validationErrors = apiValidationErrors(error);
+        this.serverErrors.set(validationErrors);
+        this.error.set(Object.keys(validationErrors).length === 0 ? apiErrorMessage(error) : '');
       },
     });
   }
