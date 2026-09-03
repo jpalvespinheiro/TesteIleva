@@ -1,11 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
-function digits(value: unknown): string {
-  return String(value ?? '').replace(/\D/g, '');
-}
+import { onlyDigits } from '../formatters/brazilian.formatters';
 
 export const cpfValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const cpf = digits(control.value);
+  const cpf = onlyDigits(control.value);
 
   if (!/^\d{11}$/.test(cpf) || /^(\d)\1{10}$/.test(cpf)) {
     return { cpf: true };
@@ -29,7 +26,7 @@ export const cpfValidator: ValidatorFn = (control: AbstractControl): ValidationE
 };
 
 export const mobilePhoneValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let phone = digits(control.value);
+  let phone = onlyDigits(control.value);
   phone = phone.length === 11 ? `55${phone}` : phone;
 
   return /^55[1-9][0-9]9[0-9]{8}$/.test(phone) ? null : { mobilePhone: true };

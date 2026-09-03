@@ -8,7 +8,7 @@ import { ValidationErrors } from '../../../../core/models/api.model';
 import { AddressLookup, PersonPayload } from '../../../../core/models/person.model';
 import { PersonService } from '../../../../core/services/person';
 import { LoadingState } from '../../../../shared/components/loading-state/loading-state';
-import { formatCep, formatCpf, formatPhone } from '../../../../shared/formatters/brazilian.formatters';
+import { formatCep, formatCpf, formatPhone, onlyDigits } from '../../../../shared/formatters/brazilian.formatters';
 import { cpfValidator, mobilePhoneValidator } from '../../../../shared/validators/brazilian.validators';
 
 @Component({
@@ -72,7 +72,7 @@ export class PersonForm {
       return;
     }
 
-    const cep = this.digits(this.form.controls.address.controls.cep.value);
+    const cep = onlyDigits(this.form.controls.address.controls.cep.value);
 
     if (this.cepLoading() || this.addressPreview()?.cep !== cep) {
       this.cepError.set(
@@ -189,7 +189,7 @@ export class PersonForm {
 
     cepControl.valueChanges
       .pipe(
-        map((value) => this.digits(value)),
+        map((value) => onlyDigits(value)),
         distinctUntilChanged(),
         tap((cep) => {
           this.addressPreview.set(null);
@@ -210,7 +210,7 @@ export class PersonForm {
               return EMPTY;
             }),
             finalize(() => {
-              if (this.digits(cepControl.value) === cep) {
+              if (onlyDigits(cepControl.value) === cep) {
                 this.cepLoading.set(false);
               }
             }),
@@ -219,9 +219,5 @@ export class PersonForm {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ data }) => this.addressPreview.set(data));
-  }
-
-  private digits(value: string): string {
-    return value.replace(/\D/g, '');
   }
 }
