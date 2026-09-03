@@ -107,7 +107,9 @@ final class PersonApiTest extends TestCase
 
         $this->postJson('/api/people', $duplicate)
             ->assertUnprocessable()
-            ->assertJsonValidationErrors('cpf');
+            ->assertJsonValidationErrors('cpf')
+            ->assertJsonPath('message', 'O CPF informado já está cadastrado.')
+            ->assertJsonPath('errors.cpf.0', 'O CPF informado já está cadastrado.');
 
         $this->assertDatabaseCount('people', 1);
     }
