@@ -154,16 +154,19 @@ export class PersonForm {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: ({ data }) => {
-          this.form.setValue({
-            name: data.name,
-            cpf: formatCpf(data.cpf),
-            phone: formatPhone(data.phone),
-            address: {
-              cep: formatCep(data.address.cep),
-              number: data.address.number,
-              complement: data.address.complement ?? '',
+          this.form.setValue(
+            {
+              name: data.name,
+              cpf: formatCpf(data.cpf),
+              phone: formatPhone(data.phone),
+              address: {
+                cep: formatCep(data.address.cep),
+                number: data.address.number,
+                complement: data.address.complement ?? '',
+              },
             },
-          });
+            { emitEvent: false },
+          );
           this.addressPreview.set({
             cep: data.address.cep,
             street: data.address.street,

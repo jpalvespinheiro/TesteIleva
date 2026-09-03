@@ -28,11 +28,19 @@ const createdPerson: Person = {
 
 class PersonServiceStub {
   createCalls = 0;
+  lookupCalls = 0;
   createResult: Observable<ApiResource<Person>> = new Subject<ApiResource<Person>>();
+  getResult: Observable<ApiResource<Person>> = of({ data: createdPerson });
   lookupResult: Observable<ApiResource<AddressLookup>> = of({ data: address });
 
   lookupCep(): Observable<ApiResource<AddressLookup>> {
+    this.lookupCalls += 1;
+
     return this.lookupResult;
+  }
+
+  get(): Observable<ApiResource<Person>> {
+    return this.getResult;
   }
 
   create(): Observable<ApiResource<Person>> {
@@ -105,6 +113,18 @@ describe('PersonForm', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Este campo é obrigatório.');
     expect(fixture.nativeElement.querySelectorAll('.required-mark').length).toBeGreaterThan(0);
+  });
+
+  it('does not look up the CEP again when loading an existing person', () => {
+    TestBed.overrideProvider(ActivatedRoute, {
+      useValue: { snapshot: { paramMap: convertToParamMap({ id: createdPerson.id }) } },
+    });
+    const fixture = TestBed.createComponent(PersonForm);
+    const service = TestBed.inject(PersonService) as unknown as PersonServiceStub;
+    fixture.detectChanges();
+
+    expect(service.lookupCalls).toBe(0);
+    expect(fixture.nativeElement.textContent).toContain('Praça da Sé');
   });
 
   it('clears the loading state when the CEP lookup fails', () => {
