@@ -26,6 +26,11 @@
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  > .field {
+    align-content: start;
+    grid-template-rows: auto auto minmax(0.9rem, auto);
+  }
 }
 
 .field--wide {

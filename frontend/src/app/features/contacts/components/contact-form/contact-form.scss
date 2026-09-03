@@ -22,6 +22,11 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: minmax(9rem, 0.4fr) minmax(13rem, 1fr);
+
+  > .field {
+    align-content: start;
+    grid-template-rows: auto auto minmax(0.9rem, auto);
+  }
 }
 
 .contact-form__actions {
