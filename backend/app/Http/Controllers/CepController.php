@@ -9,7 +9,7 @@ use App\Http\Resources\ViaCepAddressResource;
 use App\Services\ViaCep\ViaCepService;
 use Illuminate\Http\JsonResponse;
 
-final class CepController extends Controller
+final class CepController
 {
     public function show(LookupCepRequest $request, ViaCepService $viaCep): JsonResponse
     {
