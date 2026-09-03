@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { ApiResource, PaginatedResponse } from '../models/api.model';
 import { AddressLookup, Person, PersonFilters, PersonPayload } from '../models/person.model';
 
 @Injectable({ providedIn: 'root' })
 export class PersonService {
   private readonly http = inject(HttpClient);
-  private readonly peopleUrl = '/api/people';
+  private readonly apiUrl = environment.apiUrl;
+  private readonly peopleUrl = `${this.apiUrl}/api/people`;
 
   list(filters: PersonFilters, page: number, perPage: number): Observable<PaginatedResponse<Person>> {
     let params = new HttpParams().set('page', page).set('per_page', perPage);
@@ -35,7 +37,7 @@ export class PersonService {
   }
 
   lookupCep(cep: string): Observable<ApiResource<AddressLookup>> {
-    return this.http.get<ApiResource<AddressLookup>>(`/api/cep/${cep}`);
+    return this.http.get<ApiResource<AddressLookup>>(`${this.apiUrl}/api/cep/${cep}`);
   }
 
   create(payload: PersonPayload): Observable<ApiResource<Person>> {
