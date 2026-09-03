@@ -117,7 +117,7 @@
       </app-empty-state>
     } @else if (currentPerson.contacts?.length) {
       <app-contact-list
-        [contacts]="currentPerson.contacts ?? []"
+        [contacts]="currentPerson.contacts"
         (editRequested)="openEditContact($event)"
         (deleteRequested)="requestContactDelete($event)"
       />
