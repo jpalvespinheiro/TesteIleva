@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   selector: 'app-person-delete-dialog',
   styleUrl: './person-delete-dialog.scss',
   templateUrl: './person-delete-dialog.html',

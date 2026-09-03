@@ -3,7 +3,6 @@ import { ContactType, contactTypeLabels } from '../../../../core/models/contact.
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   selector: 'app-contact-type-badge',
   styleUrl: './contact-type-badge.scss',
   templateUrl: './contact-type-badge.html',

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   selector: 'app-empty-state',
   styleUrl: './empty-state.scss',
   templateUrl: './empty-state.html',
