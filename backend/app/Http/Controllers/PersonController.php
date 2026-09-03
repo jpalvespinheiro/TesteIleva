@@ -17,7 +17,7 @@ use App\Models\Person;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-final class PersonController
+class PersonController
 {
     public function index(IndexPersonRequest $request, ListPeopleAction $action): JsonResponse
     {

@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class LookupCepRequest extends FormRequest
+class LookupCepRequest extends FormRequest
 {
     public function authorize(): bool
     {

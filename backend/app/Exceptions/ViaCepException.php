@@ -7,7 +7,7 @@ namespace App\Exceptions;
 use RuntimeException;
 use Throwable;
 
-final class ViaCepException extends RuntimeException
+class ViaCepException extends RuntimeException
 {
     private function __construct(string $message, private readonly bool $cepNotFound, ?Throwable $previous = null)
     {

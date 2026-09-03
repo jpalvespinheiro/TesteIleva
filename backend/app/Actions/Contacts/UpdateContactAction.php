@@ -6,7 +6,7 @@ namespace App\Actions\Contacts;
 
 use App\Models\Contact;
 
-final class UpdateContactAction
+class UpdateContactAction
 {
     public function execute(Contact $contact, array $data): Contact
     {

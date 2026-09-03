@@ -8,7 +8,7 @@ use App\Rules\Cpf;
 use App\Rules\Phone;
 use Illuminate\Validation\Rule;
 
-final class StorePersonRequest extends PersonRequest
+class StorePersonRequest extends PersonRequest
 {
     public function rules(): array
     {

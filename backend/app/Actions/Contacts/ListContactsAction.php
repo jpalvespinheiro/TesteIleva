@@ -7,7 +7,7 @@ namespace App\Actions\Contacts;
 use App\Models\Person;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-final class ListContactsAction
+class ListContactsAction
 {
     public function execute(Person $person, int $perPage): LengthAwarePaginator
     {

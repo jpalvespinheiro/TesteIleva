@@ -6,7 +6,7 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 
-final class DocumentationTest extends TestCase
+class DocumentationTest extends TestCase
 {
     public function test_documentation_is_available(): void
     {

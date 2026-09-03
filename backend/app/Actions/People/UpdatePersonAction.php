@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Throwable;
 
-final class UpdatePersonAction
+class UpdatePersonAction
 {
     public function __construct(private readonly ViaCepService $viaCep) {}
 

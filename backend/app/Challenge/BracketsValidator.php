@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Challenge;
 
-final class BracketsValidator
+class BracketsValidator
 {
     private const array OPENING_BRACKETS = ['(', '[', '{'];
 

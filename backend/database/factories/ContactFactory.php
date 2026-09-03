@@ -8,7 +8,7 @@ use App\Enums\ContactType;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class ContactFactory extends Factory
+class ContactFactory extends Factory
 {
     public function definition(): array
     {

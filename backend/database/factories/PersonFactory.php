@@ -6,7 +6,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class PersonFactory extends Factory
+class PersonFactory extends Factory
 {
     public function definition(): array
     {

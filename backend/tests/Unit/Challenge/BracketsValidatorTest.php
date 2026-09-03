@@ -8,7 +8,7 @@ use App\Challenge\BracketsValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class BracketsValidatorTest extends TestCase
+class BracketsValidatorTest extends TestCase
 {
     #[DataProvider('validSequences')]
     public function test_accepts_balanced_sequences(string $input): void

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-final class PersonApiTest extends TestCase
+class PersonApiTest extends TestCase
 {
     use RefreshDatabase;
 

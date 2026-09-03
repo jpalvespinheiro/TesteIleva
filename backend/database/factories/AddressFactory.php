@@ -7,7 +7,7 @@ namespace Database\Factories;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class AddressFactory extends Factory
+class AddressFactory extends Factory
 {
     public function definition(): array
     {

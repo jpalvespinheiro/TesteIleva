@@ -6,7 +6,7 @@ namespace App\Actions\People;
 
 use App\Models\Person;
 
-final class ShowPersonAction
+class ShowPersonAction
 {
     public function execute(Person $person): Person
     {

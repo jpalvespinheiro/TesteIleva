@@ -6,7 +6,7 @@ namespace App\Actions\People;
 
 use App\Models\Person;
 
-final class DeletePersonAction
+class DeletePersonAction
 {
     public function execute(Person $person): void
     {

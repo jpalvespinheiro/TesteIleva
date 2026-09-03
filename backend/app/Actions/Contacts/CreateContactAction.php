@@ -7,7 +7,7 @@ namespace App\Actions\Contacts;
 use App\Models\Contact;
 use App\Models\Person;
 
-final class CreateContactAction
+class CreateContactAction
 {
     public function execute(Person $person, array $data): Contact
     {

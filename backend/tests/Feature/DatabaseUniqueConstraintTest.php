@@ -10,7 +10,7 @@ use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class DatabaseUniqueConstraintTest extends TestCase
+class DatabaseUniqueConstraintTest extends TestCase
 {
     use RefreshDatabase;
 

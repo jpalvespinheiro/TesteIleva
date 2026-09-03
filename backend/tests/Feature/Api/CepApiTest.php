@@ -7,7 +7,7 @@ namespace Tests\Feature\Api;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-final class CepApiTest extends TestCase
+class CepApiTest extends TestCase
 {
     public function test_returns_an_address_from_viacep(): void
     {

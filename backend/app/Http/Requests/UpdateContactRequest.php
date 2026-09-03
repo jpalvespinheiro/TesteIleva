@@ -9,7 +9,7 @@ use App\Models\Contact;
 use App\Rules\Phone;
 use Illuminate\Validation\Rule;
 
-final class UpdateContactRequest extends ContactRequest
+class UpdateContactRequest extends ContactRequest
 {
     public function rules(): array
     {

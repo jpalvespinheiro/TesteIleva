@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-final class CpfTest extends TestCase
+class CpfTest extends TestCase
 {
     #[DataProvider('validCpfs')]
     public function test_accepts_valid_cpf(string $cpf): void

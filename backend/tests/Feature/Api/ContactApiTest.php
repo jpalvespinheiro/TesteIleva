@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-final class ContactApiTest extends TestCase
+class ContactApiTest extends TestCase
 {
     use RefreshDatabase;
 

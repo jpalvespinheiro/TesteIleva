@@ -10,7 +10,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use LogicException;
 
-final class ViaCepService
+class ViaCepService
 {
     public function find(string $cep): ViaCepAddress
     {

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LogicException;
 
-final class ContactResource extends JsonResource
+class ContactResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

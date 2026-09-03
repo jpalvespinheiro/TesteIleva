@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-final class PhoneTest extends TestCase
+class PhoneTest extends TestCase
 {
     #[DataProvider('validPhones')]
     public function test_accepts_valid_brazilian_mobile_phone(string $phone): void

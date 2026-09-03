@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class IndexContactRequest extends FormRequest
+class IndexContactRequest extends FormRequest
 {
     public function authorize(): bool
     {

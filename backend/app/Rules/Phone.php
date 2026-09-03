@@ -7,7 +7,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final class Phone implements ValidationRule
+class Phone implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

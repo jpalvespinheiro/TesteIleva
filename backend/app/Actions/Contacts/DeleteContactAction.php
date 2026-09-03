@@ -6,7 +6,7 @@ namespace App\Actions\Contacts;
 
 use App\Models\Contact;
 
-final class DeleteContactAction
+class DeleteContactAction
 {
     public function execute(Contact $contact): void
     {
