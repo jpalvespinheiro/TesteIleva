@@ -17,6 +17,13 @@ Implementação das três tarefas do teste técnico: validação de colchetes, A
 - ESLint, Prettier e Vitest
 - Docker e FrankenPHP
 
+## Demonstração
+
+- Aplicação web: https://teste-ileva-web.onrender.com
+- API: https://testeileva.onrender.com/api
+- Documentação: https://testeileva.onrender.com/docs/api
+- Health check: https://testeileva.onrender.com/up
+
 ## Estrutura
 
 ```text
