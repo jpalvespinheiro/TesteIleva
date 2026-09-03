@@ -1,11 +1,11 @@
 <?php
 
-use App\Exceptions\CepNotFoundException;
-use App\Exceptions\ViaCepUnavailableException;
+use App\Exceptions\ViaCepException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,19 +19,20 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(
-            fn (CepNotFoundException $exception, Request $request) => response()->json([
+        $exceptions->render(function (ViaCepException $exception, Request $request): JsonResponse {
+            if ($exception->isCepNotFound()) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'errors' => [
+                        $request->routeIs('cep.show') ? 'cep' : 'address.cep' => [$exception->getMessage()],
+                    ],
+                ], 422);
+            }
+
+            return response()->json([
                 'message' => $exception->getMessage(),
-                'errors' => [
-                    $request->routeIs('cep.show') ? 'cep' : 'address.cep' => [$exception->getMessage()],
-                ],
-            ], 422),
-        );
-        $exceptions->render(
-            fn (ViaCepUnavailableException $exception) => response()->json([
-                'message' => $exception->getMessage(),
-            ], 503),
-        );
+            ], 503);
+        });
         $exceptions->render(function (UniqueConstraintViolationException $exception): mixed {
             if ($exception->index === 'people_cpf_unique' || $exception->columns === ['cpf']) {
                 return response()->json([
