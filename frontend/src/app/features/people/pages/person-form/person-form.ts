@@ -47,6 +47,10 @@ export class PersonForm {
   });
 
   constructor() {
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.error.set('');
+      this.serverErrors.set({});
+    });
     this.watchCep();
 
     if (this.personId) {

@@ -180,6 +180,11 @@ describe('PersonForm', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('O CPF informado já está cadastrado.');
+
+    fillInput(fixture, '[formControlName="cpf"]', '111.444.777-35');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).not.toContain('O CPF informado já está cadastrado.');
   });
 
   it('returns to the people grid after creating a person', () => {

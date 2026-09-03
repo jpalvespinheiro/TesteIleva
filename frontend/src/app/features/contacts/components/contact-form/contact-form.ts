@@ -49,6 +49,11 @@ export class ContactForm {
     this.form.controls.type.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((type) => this.applyValueValidators(type));
+
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.error.set('');
+      this.serverErrors.set({});
+    });
   }
 
   protected submit(): void {
