@@ -18,7 +18,8 @@ WORKDIR /app
 COPY --from=dependencies /app /app
 COPY docker/entrypoint.sh /usr/local/bin/app-entrypoint
 
-RUN chmod +x /usr/local/bin/app-entrypoint \
+RUN setcap -r /usr/local/bin/frankenphp \
+    && chmod +x /usr/local/bin/app-entrypoint \
     && mkdir -p /config /data storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data /app /config /data
 
