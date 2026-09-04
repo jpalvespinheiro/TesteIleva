@@ -4,7 +4,10 @@ export function onlyDigits(value: unknown): string {
 
 export function formatCpf(value: unknown): string {
   const cpf = onlyDigits(value).slice(0, 11);
-  return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+  return cpf
+    .replace(/^(\d{3})(\d)/, '$1.$2')
+    .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+    .replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2');
 }
 
 export function formatPhone(value: unknown): string {

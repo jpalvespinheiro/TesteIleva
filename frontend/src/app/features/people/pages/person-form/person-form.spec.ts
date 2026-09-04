@@ -118,6 +118,17 @@ describe('PersonForm', () => {
     expect(fixture.nativeElement.querySelectorAll('.required-mark').length).toBeGreaterThan(0);
   });
 
+  it('formats the CPF while it is being entered', () => {
+    const fixture = TestBed.createComponent(PersonForm);
+    fixture.detectChanges();
+
+    fillInput(fixture, '[formControlName="cpf"]', '5299');
+    fixture.detectChanges();
+
+    const cpf = fixture.nativeElement.querySelector('[formControlName="cpf"]') as HTMLInputElement;
+    expect(cpf.value).toBe('529.9');
+  });
+
   it('does not look up the CEP again when loading an existing person', () => {
     TestBed.overrideProvider(ActivatedRoute, {
       useValue: { snapshot: { paramMap: convertToParamMap({ id: createdPerson.id }) } },

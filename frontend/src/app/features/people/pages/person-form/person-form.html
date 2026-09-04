@@ -50,7 +50,7 @@
             maxlength="14"
             placeholder="000.000.000-00"
             required
-            (blur)="formatCpf()"
+            (input)="formatCpf()"
           />
           @if (fieldError('cpf')) {
             <small class="field__error">{{ fieldError('cpf') }}</small>

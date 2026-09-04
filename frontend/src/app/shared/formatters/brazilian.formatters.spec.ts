@@ -5,6 +5,12 @@ describe('Brazilian formatters', () => {
     expect(formatCpf('52998224725')).toBe('529.982.247-25');
   });
 
+  it('formats a CPF progressively', () => {
+    expect(formatCpf('5299')).toBe('529.9');
+    expect(formatCpf('5299822')).toBe('529.982.2');
+    expect(formatCpf('5299822472')).toBe('529.982.247-2');
+  });
+
   it('formats a mobile phone with country code', () => {
     expect(formatPhone('5511999998888')).toBe('(11) 99999-8888');
   });
