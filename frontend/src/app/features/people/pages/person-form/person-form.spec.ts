@@ -129,6 +129,17 @@ describe('PersonForm', () => {
     expect(cpf.value).toBe('529.9');
   });
 
+  it('formats the phone while it is being entered', () => {
+    const fixture = TestBed.createComponent(PersonForm);
+    fixture.detectChanges();
+
+    fillInput(fixture, '[formControlName="phone"]', '11999998');
+    fixture.detectChanges();
+
+    const phone = fixture.nativeElement.querySelector('[formControlName="phone"]') as HTMLInputElement;
+    expect(phone.value).toBe('(11) 99999-8');
+  });
+
   it('does not look up the CEP again when loading an existing person', () => {
     TestBed.overrideProvider(ActivatedRoute, {
       useValue: { snapshot: { paramMap: convertToParamMap({ id: createdPerson.id }) } },

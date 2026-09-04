@@ -67,7 +67,7 @@
             maxlength="16"
             placeholder="(11) 99999-9999"
             required
-            (blur)="formatPhone()"
+            (input)="formatPhone()"
           />
           @if (fieldError('phone')) {
             <small class="field__error">{{ fieldError('phone') }}</small>

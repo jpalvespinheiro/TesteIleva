@@ -30,7 +30,7 @@
         [placeholder]="form.controls.type.value === 'email' ? 'nome@exemplo.com' : '(11) 99999-9999'"
         [autocomplete]="form.controls.type.value === 'email' ? 'email' : 'tel'"
         required
-        (blur)="formatValue()"
+        (input)="formatValue()"
       />
       @if (valueError()) {
         <small class="field__error">{{ valueError() }}</small>

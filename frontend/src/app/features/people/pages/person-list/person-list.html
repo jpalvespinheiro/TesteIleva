@@ -45,7 +45,7 @@
       </label>
       <label class="field">
         <span>Telefone</span>
-        <input type="tel" formControlName="phone" maxlength="16" autocomplete="off" (blur)="formatPhoneFilter()" />
+        <input type="tel" formControlName="phone" maxlength="16" autocomplete="off" (input)="formatPhoneFilter()" />
       </label>
       <div class="filters-actions">
         <button class="button button--ghost" type="button" (click)="clearFilters()">Limpar</button>

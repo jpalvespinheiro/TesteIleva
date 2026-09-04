@@ -15,6 +15,12 @@ describe('Brazilian formatters', () => {
     expect(formatPhone('5511999998888')).toBe('(11) 99999-8888');
   });
 
+  it('formats a mobile phone progressively', () => {
+    expect(formatPhone('119')).toBe('(11) 9');
+    expect(formatPhone('11999998')).toBe('(11) 99999-8');
+    expect(formatPhone('11999998888')).toBe('(11) 99999-8888');
+  });
+
   it('formats a CEP', () => {
     expect(formatCep('01001000')).toBe('01001-000');
   });
