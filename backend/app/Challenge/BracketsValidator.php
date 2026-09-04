@@ -6,30 +6,23 @@ namespace App\Challenge;
 
 class BracketsValidator
 {
-    private const array OPENING_BRACKETS = ['(', '[', '{'];
-
-    private const array PAIRS = [
-        ')' => '(',
-        ']' => '[',
-        '}' => '{',
-    ];
-
     public function isValid(string $input): bool
     {
+        $pairs = [')' => '(', ']' => '[', '}' => '{'];
         $stack = [];
 
         foreach (str_split($input) as $bracket) {
-            if (in_array($bracket, self::OPENING_BRACKETS, true)) {
+            if (in_array($bracket, $pairs, true)) {
                 $stack[] = $bracket;
 
                 continue;
             }
 
-            if (! isset(self::PAIRS[$bracket])) {
+            if (! isset($pairs[$bracket])) {
                 return false;
             }
 
-            if (array_pop($stack) !== self::PAIRS[$bracket]) {
+            if (array_pop($stack) !== $pairs[$bracket]) {
                 return false;
             }
         }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EMPTY, catchError, distinctUntilChanged, finalize, map, switchMap, tap, timer } from 'rxjs';
 import { apiErrorMessage, apiValidationErrors } from '../../../../core/api-error';
@@ -25,7 +25,9 @@ export class PersonForm {
   private readonly personService = inject(PersonService);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly personId = Number(this.route.snapshot.paramMap.get('id')) || null;
+  private readonly idParam = this.route.snapshot.paramMap.get('id');
+
+  protected readonly personId = this.idParam === null ? null : Number(this.idParam);
   protected readonly isEditing = this.personId !== null;
   protected readonly loading = signal(this.isEditing);
   protected readonly saving = signal(false);
@@ -47,15 +49,25 @@ export class PersonForm {
   });
 
   constructor() {
-    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.error.set('');
-      this.serverErrors.set({});
-    });
+    this.clearServerErrorOnChange('name', this.form.controls.name);
+    this.clearServerErrorOnChange('cpf', this.form.controls.cpf);
+    this.clearServerErrorOnChange('phone', this.form.controls.phone);
+    this.clearServerErrorOnChange('address.cep', this.form.controls.address.controls.cep);
+    this.clearServerErrorOnChange('address.number', this.form.controls.address.controls.number);
+    this.clearServerErrorOnChange('address.complement', this.form.controls.address.controls.complement);
     this.watchCep();
 
-    if (this.personId) {
-      this.loadPerson(this.personId);
+    if (this.personId === null) {
+      return;
     }
+
+    if (!Number.isInteger(this.personId) || this.personId <= 0) {
+      void this.router.navigate(['/people']);
+
+      return;
+    }
+
+    this.loadPerson(this.personId);
   }
 
   protected submit(): void {
@@ -219,5 +231,19 @@ export class PersonForm {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ data }) => this.addressPreview.set(data));
+  }
+
+  private clearServerErrorOnChange(path: string, control: AbstractControl): void {
+    control.valueChanges.pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.error.set('');
+      const errors = { ...this.serverErrors() };
+
+      if (!Object.hasOwn(errors, path)) {
+        return;
+      }
+
+      delete errors[path];
+      this.serverErrors.set(errors);
+    });
   }
 }

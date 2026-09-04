@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { distinctUntilChanged, finalize } from 'rxjs';
 import { apiErrorMessage, apiValidationErrors } from '../../../../core/api-error';
 import { Contact, ContactPayload, ContactType, contactTypeOptions } from '../../../../core/models/contact.model';
 import { ValidationErrors } from '../../../../core/models/api.model';
@@ -39,21 +39,34 @@ export class ContactForm {
   constructor() {
     effect(() => {
       const contact = this.contact();
-      this.form.reset({ type: contact?.type ?? 'email', value: contact?.value ?? '' });
+      this.form.reset({ type: contact?.type ?? 'email', value: contact?.value ?? '' }, { emitEvent: false });
       this.submitted.set(false);
       this.error.set('');
       this.serverErrors.set({});
       this.applyValueValidators(contact?.type ?? 'email');
     });
 
-    this.form.controls.type.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((type) => this.applyValueValidators(type));
-
-    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.error.set('');
-      this.serverErrors.set({});
+    this.form.controls.type.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((type) => {
+      this.applyValueValidators(type);
+      this.clearServerError('type');
+      this.clearServerError('value');
     });
+
+    this.form.controls.value.valueChanges
+      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.clearServerError('value'));
+  }
+
+  private clearServerError(field: string): void {
+    this.error.set('');
+    const errors = { ...this.serverErrors() };
+
+    if (!Object.hasOwn(errors, field)) {
+      return;
+    }
+
+    delete errors[field];
+    this.serverErrors.set(errors);
   }
 
   protected submit(): void {

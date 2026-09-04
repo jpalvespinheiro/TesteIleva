@@ -28,6 +28,7 @@ const createdPerson: Person = {
 
 class PersonServiceStub {
   createCalls = 0;
+  getCalls = 0;
   lookupCalls = 0;
   createResult: Observable<ApiResource<Person>> = new Subject<ApiResource<Person>>();
   getResult: Observable<ApiResource<Person>> = of({ data: createdPerson });
@@ -40,6 +41,8 @@ class PersonServiceStub {
   }
 
   get(): Observable<ApiResource<Person>> {
+    this.getCalls += 1;
+
     return this.getResult;
   }
 
@@ -127,6 +130,19 @@ describe('PersonForm', () => {
     expect(fixture.nativeElement.textContent).toContain('Praça da Sé');
   });
 
+  it('redirects when the edit route has an invalid id', () => {
+    TestBed.overrideProvider(ActivatedRoute, {
+      useValue: { snapshot: { paramMap: convertToParamMap({ id: 'invalid' }) } },
+    });
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    TestBed.createComponent(PersonForm);
+    const service = TestBed.inject(PersonService) as unknown as PersonServiceStub;
+
+    expect(navigate).toHaveBeenCalledWith(['/people']);
+    expect(service.getCalls).toBe(0);
+  });
+
   it('clears the loading state when the CEP lookup fails', () => {
     const service = TestBed.inject(PersonService) as unknown as PersonServiceStub;
     service.lookupResult = throwError(
@@ -186,6 +202,42 @@ describe('PersonForm', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).not.toContain('O CPF informado já está cadastrado.');
+  });
+
+  it('keeps validation errors from fields that were not changed', () => {
+    const service = TestBed.inject(PersonService) as unknown as PersonServiceStub;
+    service.createResult = throwError(
+      () =>
+        new HttpErrorResponse({
+          status: 422,
+          error: {
+            message: 'Os dados informados são inválidos.',
+            errors: {
+              cpf: ['O CPF informado já está cadastrado.'],
+              phone: ['O celular informado é inválido.'],
+            },
+          },
+        }),
+    );
+    const fixture = TestBed.createComponent(PersonForm);
+    fixture.detectChanges();
+    prepareValidForm(fixture);
+
+    const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
+    form.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    fillInput(fixture, '[formControlName="name"]', 'Maria Souza');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('O CPF informado já está cadastrado.');
+    expect(fixture.nativeElement.textContent).toContain('O celular informado é inválido.');
+
+    fillInput(fixture, '[formControlName="cpf"]', '111.444.777-35');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).not.toContain('O CPF informado já está cadastrado.');
+    expect(fixture.nativeElement.textContent).toContain('O celular informado é inválido.');
   });
 
   it('returns to the people grid after creating a person', () => {

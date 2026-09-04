@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { onlyDigits } from '../../shared/formatters/brazilian.formatters';
 import { ApiResource, PaginatedResponse } from '../models/api.model';
 import { AddressLookup, Person, PersonFilters, PersonPayload } from '../models/person.model';
 
@@ -14,8 +15,8 @@ export class PersonService {
   list(filters: PersonFilters, page: number, perPage: number): Observable<PaginatedResponse<Person>> {
     let params = new HttpParams().set('page', page).set('per_page', perPage);
     const name = filters.name.trim();
-    const cpf = filters.cpf.replace(/\D/g, '');
-    const phone = filters.phone.replace(/\D/g, '');
+    const cpf = onlyDigits(filters.cpf);
+    const phone = onlyDigits(filters.phone);
 
     if (name) {
       params = params.set('name', name);
